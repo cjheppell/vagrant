@@ -1,0 +1,32 @@
+---
+- name: Install OpenZFS
+  hosts: "*"
+  become: true
+
+  tasks:
+  - name: Populate service facts
+    service_facts:
+
+  - name: Install ZFS and NFS
+    block:
+      - name: Install zfs repo
+        yum:
+          name: http://download.zfsonlinux.org/epel/zfs-release.el7_8.noarch.rpm
+      - name: Install epel-release
+        yum:
+          name: epel-release
+      - name: Install kernel-devel
+        shell: 'yum install "kernel-devel-uname-r == $(uname -r)" -y'
+      - name: Install zfs
+        yum:
+          name: zfs
+      - name: Install the zfs kernel modules
+        shell: "/sbin/modprobe zfs"
+      - name: Install nfs
+        yum:
+          name: nfs-utils
+      - name: Start nfs server
+        systemd:
+          name: nfs-server
+          state: started
+          enabled: yes
