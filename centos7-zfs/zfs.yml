@@ -17,6 +17,8 @@
           name: epel-release
       - name: Install kernel-devel
         shell: 'yum install "kernel-devel-uname-r == $(uname -r)" -y'
+        args:
+          warn: no
       - name: Install zfs
         yum:
           name: zfs
