@@ -22,8 +22,13 @@
       - name: Install zfs
         yum:
           name: zfs
-      - name: Install the zfs kernel modules
+      - name: Load the zfs kernel modules
         shell: "/sbin/modprobe zfs"
+      - name: Load zfs kernel modules on boot
+        copy:
+          dest: "/etc/modules-load.d/zfs.conf"
+          content: |
+            zfs
       - name: Install nfs
         yum:
           name: nfs-utils
